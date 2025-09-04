@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What is SharePoint? — Capt. Thomas Session 1</title>
+  <style>
+    :root{ --bg:#001428;--card:#0a223d;--text:#e9eefb;--muted:#b8c2e0;--accent:#5dd4ff;--accent-2:#8fff8f;--shadow:0 12px 40px rgba(0,0,0,.45); }
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui; color:var(--text);
+      background:linear-gradient(180deg,#001428 0%,#003355 100%), url('https://www.transparenttextures.com/patterns/waves.png');
+      background-size:cover; overflow:hidden; font-size:20px;}
+    .deck{height:100%;display:grid;grid-template-rows:auto 1fr auto;}
+    header{display:flex;align-items:center;justify-content:flex-end;padding:14px 18px;}
+    header img{height:42px;border-radius:6px;box-shadow:var(--shadow)}
+    .slides{position:relative;overflow:hidden;}
+    .slide{position:absolute;inset:0;padding:50px;opacity:0;overflow:auto}
+    .slide.active{opacity:1}
+    .card{background:rgba(0,30,60,.7);border:1px solid rgba(255,255,255,.08);border-radius:20px;box-shadow:var(--shadow);padding:40px;backdrop-filter:blur(6px);height:100%;display:flex;flex-direction:column;justify-content:center;position:relative}
+    h1{font-size:48px;margin:0 0 20px}
+    h2{color:var(--accent);margin:0 0 15px;font-size:32px}
+    p{color:var(--muted);line-height:1.8;font-size:20px}
+    img.illustration{max-width:100%;border-radius:12px;margin:20px auto;box-shadow:var(--shadow)}
+    .small-img{max-width:50%}
+    .dynamic-img{max-width:100%;animation:float 3s ease-in-out infinite}
+    @keyframes float {0%{transform:translateY(0)}50%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+
+    /* Feature tiles */
+    .feature-list{display:grid;grid-template-columns:1fr 1fr;gap:24px 36px;margin-top:10px}
+    .feature{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px}
+    .badge{width:48px;height:48px;border-radius:12px;background:rgba(93,212,255,.12);border:1px solid rgba(93,212,255,.35);display:flex;align-items:center;justify-content:center;font-size:22px}
+    .feat-title{font-weight:700}
+    .feat-desc{color:var(--muted)}
+
+    .split{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
+
+    /* Timeline styling (line kept below headings) */
+    .timeline{display:flex;justify-content:space-between;align-items:flex-start;margin-top:30px;position:relative;font-size:18px;padding-top:40px}
+    .timeline::before{content:"";position:absolute;top:85px;left:5%;right:5%;height:4px;background:var(--accent);z-index:0;border-radius:4px}
+    .milestone{flex:1;text-align:center;position:relative;z-index:1}
+    .milestone i{font-size:28px;color:var(--accent);background:#0a223d;padding:10px;border-radius:50%;box-shadow:0 0 8px rgba(93,212,255,.4)}
+    .milestone h3{margin:12px 0 6px;font-size:20px}
+    .milestone p{font-size:16px;color:var(--muted)}
+
+    /* Use-case cards */
+    .usecases{display:grid;grid-template-columns:1fr 1fr 1fr;gap:26px}
+    .case{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px;text-align:center}
+    .case h3{margin:10px 0 6px}
+    .case p{font-size:18px}
+
+    /* Stats split (earlier version) */
+    .stats{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center}
+    .stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:26px;text-align:center}
+    .stat .big{font-size:56px;font-weight:800}
+
+    .controls{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:rgba(0,20,40,.5);}
+    .btn{padding:10px 18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:10px;color:#fff;cursor:pointer;font-size:18px}
+    .progress{height:8px;background:rgba(255,255,255,.08);flex:1;margin:0 12px;border-radius:999px;overflow:hidden;position:relative}
+    .bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%}
+    #counter{margin-left:12px;font-size:18px;color:#fff;white-space:nowrap}
+    @media print{.controls,header .help{display:none}body{overflow:visible}.slide{position:relative;opacity:1;transform:none;page-break-inside:avoid}#counter{display:none}}
+    .notes{display:none}@media print{.notes{display:block;margin-top:15px;padding:10px;border-top:1px dashed rgba(255,255,255,.2);font-size:16px;color:#aaa}}
+    .icon{font-size:24px;margin-right:8px}
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+  <div class="deck">
+    <header>
+      <div class="logo">
+        <img src="https://image2url.com/images/1756963633687-fb50bcfa-c847-4024-8cb1-eb38fff8d3c5.png" alt="Company Logo">
+      </div>
+    </header>
+    <main class="slides">
+      <!-- Slide 1: Title & Key Message -->
+      <section class="slide active">
+        <div class="card" style="text-align:center">
+          <h1><i class="fa-solid fa-ship icon"></i>SharePoint: Your Digital Workplace</h1>
+          <p><b>Key message:</b> SharePoint is more than a file store — it’s a secure, centralized platform for collaboration and content management that helps us work smarter.</p>
+          <img class="illustration dynamic-img" src="https://keapoint.com/wp-content/uploads/2024/02/immagini-pagine-funzionalita-e1707237319249.png" alt="SharePoint overview image">
+        </div>
+      </section>
+
+      <!-- Slide 2: Evolution / timeline -->
+      <section class="slide">
+        <div class="card">
+          <h2><i class="fa-solid fa-clock-rotate-left icon"></i>SharePoint: A Journey of Innovation</h2>
+          <div class="timeline">
+            <div class="milestone"><i class="fa-solid fa-flag"></i><h3>2001 — Initial Release</h3><p>Web‑based document management & collaboration.</p></div>
+            <div class="milestone"><i class="fa-solid fa-chart-line"></i><h3>2007 — Major Update</h3><p>Enterprise content management & BI.</p></div>
+            <div class="milestone"><i class="fa-solid fa-cloud"></i><h3>2010s — Shift to Cloud</h3><p>SharePoint Online with Microsoft 365.</p></div>
+            <div class="milestone"><i class="fa-solid fa-globe"></i><h3>Today — Modern</h3><p>Teams integration; AI‑powered search & content.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3: Analogy & purpose -->
+      <section class="slide">
+        <div class="card">
+          <div class="split">
+            <div>
+              <h2><i class="fa-solid fa-house icon"></i>Think of SharePoint as...</h2>
+              <p>A <b>digital office building</b> where every department has its own room, files are neatly labeled, and everyone knows where to find the latest version.</p>
+              <p><b>Purpose:</b> Secure, centralized hub to store, organize, share, and access information.</p>
+              <p><b>Part of Microsoft 365:</b> Seamless with Teams, OneDrive, Outlook, and Power Platform.</p>
+            </div>
+            <div style="text-align:center">
+              <img class="illustration small-img" src="https://image2url.com/images/1756964187499-c2b505db-78ac-4423-95ca-b1369093ff7b.png" alt="Digital building analogy image">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 4: Core Capabilities -->
+      <section class="slide">
+        <div class="card">
+          <h2><i class="fa-solid fa-layer-group icon"></i>Core Capabilities</h2>
+          <div class="feature-list">
+            <div class="feature"><div class="badge">📂</div><div><div class="feat-title">Document Management</div><div class="feat-desc">Version history, co‑authoring, secure sharing.</div></div></div>
+            <div class="feature"><div class="badge">🗞️</div><div><div class="feat-title">Intranet & Communication</div><div class="feat-desc">Internal site for news, announcements, resources.</div></div></div>
+            <div class="feature"><div class="badge">👥</div><div><div class="feat-title">Team Collaboration</div><div class="feat-desc">Team sites keep projects and departments aligned.</div></div></div>
+            <div class="feature"><div class="badge">⚙️</div><div><div class="feat-title">Process Automation</div><div class="feat-desc">Automate approvals and tasks via Power Automate.</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5: Platform Benefits -->
+      <section class="slide">
+        <div class="card">
+          <h2><i class="fa-solid fa-circle-check icon"></i>Platform Benefits</h2>
+          <div class="feature-list">
+            <div class="feature"><div class="badge">🔎</div><div><div class="feat-title">Easy Access</div><div class="feat-desc">Fast access to documents and files, anywhere.</div></div></div>
+            <div class="feature"><div class="badge">🎛️</div><div><div class="feat-title">Customizable Interfaces</div><div class="feat-desc">Tailor pages and navigation for each audience.</div></div></div>
+            <div class="feature"><div class="badge">🛡️</div><div><div class="feat-title">Robust Security</div><div class="feat-desc">Site‑/library‑/item‑level permissions & compliance.</div></div></div>
+            <div class="feature"><div class="badge">📱</div><div><div class="feat-title">Mobile Access</div><div class="feat-desc">Work on the go with responsive sites & apps.</div></div></div>
+            <div class="feature"><div class="badge">🔗</div><div><div class="feat-title">Microsoft Integration</div><div class="feat-desc">Deep integration with Teams, OneDrive, Office apps.</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 6: Why it matters to Ops -->
+      <section class="slide">
+        <div class="card">
+          <h2><i class="fa-solid fa-people-group icon"></i>Why it matters to Ops</h2>
+          <div class="feature-list">
+            <div class="feature"><div class="badge">⏱️</div><div><div class="feat-title">Save Time</div><div class="feat-desc">Stop hunting across emails & folders.</div></div></div>
+            <div class="feature"><div class="badge">✅</div><div><div class="feat-title">Consistency</div><div class="feat-desc">One source of truth for SOPs & templates.</div></div></div>
+            <div class="feature"><div class="badge">⚓</div><div><div class="feat-title">Control</div><div class="feat-desc">Granular permissions keep sensitive data secure.</div></div></div>
+            <div class="feature"><div class="badge">📈</div><div><div class="feat-title">Alignment</div><div class="feat-desc">Teams work from the same playbook.</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 7: Common Use Cases -->
+      <section class="slide">
+        <div class="card">
+          <h2><i class="fa-solid fa-briefcase icon"></i>Common Use Cases for SharePoint</h2>
+          <div class="usecases">
+            <div class="case"><h3>Project Management</h3><p>Streamlined workflows for effective <b>tracking & execution</b>.</p></div>
+            <div class="case"><h3>Team Collaboration</h3><p>Enhance <b>communication & collaboration</b> across teams.</p></div>
+            <div class="case"><h3>Knowledge Sharing</h3><p>Centralized access to <b>resources & documentation</b>.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 8: Key Stats (split view) -->
+      <section class="slide">
+        <div class="card">
+          <h2><i class="fa-solid fa-chart-column icon"></i>Key Stats</h2>
+          <div class="stats">
+            <div class="stat"><div class="big">63%</div><h3>Adoption Rate</h3><p><b>63% of organizations</b> have integrated SharePoint into their workflow.</p></div>
+            <div class="stat"><div class="big">87%</div><h3>User Satisfaction</h3><p><b>87% of users</b> report being satisfied with SharePoint’s performance and features.</p></div>
+          </div>
+          <p class="notes">Replace with your org’s actual figures when available.</p>
+        </div>
+      </section>
+
+      <!-- Slide 9: Takeaway + Quote -->
+      <section class="slide">
+        <div class="card" style="text-align:center">
+          <h2><i class="fa-solid fa-star icon"></i>Takeaway</h2>
+          <h1>SharePoint = organized, secure, and searchable home for Ops work.</h1>
+          <p>Part of Microsoft 365 — integrates with Teams, OneDrive, and Power Platform.</p>
+          <hr style="opacity:.2;margin:18px 0">
+          <p style="font-size:26px; font-weight:600; color:#cfe8ff">“Collaboration is the key to achieving great results.”</p>
+        </div>
+      </section>
+
+      <!-- Slide 10: Road Ahead (timeline line below text, not obscuring) -->
+      <section class="slide">
+        <div class="card">
+          <h2><i class="fa-solid fa-road icon"></i>The Road Ahead</h2>
+          <div class="timeline">
+            <div class="milestone"><i class="fa-solid fa-ship"></i><h3>Now</h3><p>Scattered files · Mixed practices</p></div>
+            <div class="milestone"><i class="fa-solid fa-compass"></i><h3>Improvements</h3><p>Clean structure · Metadata & search · Approvals</p></div>
+            <div class="milestone"><i class="fa-solid fa-anchor"></i><h3>Future</h3><p>One‑stop Ops hub · Automations · Insights dashboards</p></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <nav class="controls">
+      <button class="btn" id="prev">◀ Prev</button>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <div id="counter">Slide 1 of 10</div>
+      <button class="btn" id="next">Next ▶</button>
+    </nav>
+  </div>
+  <script>
+    const slides=[...document.querySelectorAll('.slide')];let i=0;const bar=document.getElementById('bar');const counter=document.getElementById('counter');
+    function show(n){slides.forEach(s=>s.classList.remove('active'));i=(n+slides.length)%slides.length;slides[i].classList.add('active');bar.style.width=((i+1)/slides.length*100)+'%';counter.textContent=`Slide ${i+1} of ${slides.length}`;}
+    document.getElementById('prev').onclick=()=>show(i-1);document.getElementById('next').onclick=()=>show(i+1);
+    window.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))show(i+1);if(['ArrowLeft','PageUp','Backspace'].includes(e.key))show(i-1);if(e.key.toLowerCase()==='p')window.print();});
+    show(0);
+  </script>
+</body>
+</html>
